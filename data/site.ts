@@ -1,0 +1,18 @@
+export const siteData = {
+  name: "Arham Suhail",
+  role: "AI-focused developer",
+  tagline: "I build AI systems that run your business.",
+  subTagline: "AI automation, AI calling agents, and modern websites for businesses that want to save time and never miss a customer.",
+  email: "arhamforwork247@gmail.com",
+  whatsappNumber: "+92 334 7226082",
+  whatsappLink: "https://wa.me/923347226082?text=Hi%20Arham%2C%20I%20found%20your%20website%20and%20want%20to%20discuss%20a%20project",
+  calendlyUrl: "https://calendly.com/arhamsuhail247",
+  linkedin: "https://www.linkedin.com/in/arham-suhail7",
+  github: "https://github.com/Arham-Suhail",
+  domain: "https://arhamsuhail.dev",
+  logoSrc: "",
+  seoTitle: "Arham Suhail | AI Automation, AI Calling Agents & Web Developer",
+  seoDescription: "I build AI automations, AI calling agents, and modern websites for businesses. Every project starts with a business problem.",
+  introEnabled: true,
+  introFrequency: "always",
+};
