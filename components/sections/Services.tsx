@@ -153,7 +153,12 @@ function ServiceCard({ svc, index }: { svc: typeof servicesData[0] & { alsoInclu
           )}
         </AnimatePresence>
 
-        <div className="mt-2">
+        <div className="mt-2 flex flex-col gap-3">
+          {svc.disclaimer && (
+            <p className="text-[11px] text-muted leading-tight">
+              {svc.disclaimer}
+            </p>
+          )}
           <button
             onClick={handleWhatsAppClick}
             className="w-full flex items-center justify-center gap-2 bg-ice text-bg py-3 px-6 rounded-full font-semibold uppercase tracking-wider text-sm hover:bg-ice-hover transition-colors"

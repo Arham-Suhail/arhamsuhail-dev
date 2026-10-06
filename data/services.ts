@@ -22,7 +22,8 @@ export const servicesData = [
       "Social media scheduling"
     ],
     delivery: "Typical delivery: about 5 days once the scope is agreed.",
-    whatsappIntro: "Hi Arham, I'm interested in your AI Automation service."
+    whatsappIntro: "Hi Arham, I'm interested in your AI Automation service.",
+    disclaimer: "You provide the automation platform account, if one is required."
   },
   {
     id: "02",
@@ -43,7 +44,8 @@ export const servicesData = [
       "Customer support lines"
     ],
     delivery: "Timeline depends on your script and integrations, agreed before we start.",
-    whatsappIntro: "Hi Arham, I'm interested in your AI Calling Agent service."
+    whatsappIntro: "Hi Arham, I'm interested in your AI Calling Agent service.",
+    disclaimer: "You provide the voice platform and phone number account."
   },
   {
     id: "03",
@@ -63,6 +65,7 @@ export const servicesData = [
       "Web apps"
     ],
     delivery: "Typical delivery: about 5 days once the scope is agreed.",
-    whatsappIntro: "Hi Arham, I'm interested in your Website Development service."
+    whatsappIntro: "Hi Arham, I'm interested in your Website Development service.",
+    disclaimer: "Domain, hosting and third-party costs are your responsibility."
   }
 ];
