@@ -6,6 +6,7 @@ import type { Variants } from "framer-motion";
 import { siteData } from "../../data/site";
 import { ArrowRight, GraduationCap, Globe, Cpu, Rocket } from "lucide-react";
 import Image from "next/image";
+import { RevealText } from "../ui/reveal-text";
 
 export default function Hero() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -21,13 +22,11 @@ export default function Hero() {
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setRevealState("revealed");
     } else {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setRevealState("hidden");
       let revealed = false;
       const handleReveal = () => {
         if (!revealed) {
           revealed = true;
-          // eslint-disable-next-line react-hooks/set-state-in-effect
           setRevealState("revealed");
         }
       };
@@ -91,7 +90,7 @@ export default function Hero() {
       <motion.div 
         id="giant-name"
         style={{ y: nameY }}
-        className="relative lg:absolute lg:top-[15vh] w-full lg:max-w-[1680px] mx-auto px-5 lg:px-[5vw] flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-between z-10 pointer-events-none select-none text-ice font-display"
+        className="relative lg:absolute lg:top-[15vh] w-full lg:max-w-[1680px] mx-auto px-5 lg:px-[5vw] flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-between z-10 select-none text-ice font-display pointer-events-auto"
       >
         <motion.div 
           className="w-full flex flex-col lg:flex-row items-start lg:items-center justify-start lg:justify-between origin-center"
@@ -99,11 +98,15 @@ export default function Hero() {
           initial="ssr"
           animate={revealState}
         >
-          <div id="giant-name-text" className="hidden lg:block text-[14vw] leading-[0.85] tracking-tight">ARHAM</div>
-          <div className="hidden lg:block text-[14vw] leading-[0.85] tracking-tight">SUHAIL</div>
-          <div className="block lg:hidden text-[min(26vw,150px)] leading-[0.85] tracking-tight text-left">
-            <div>ARHAM</div>
-            <div>SUHAIL</div>
+          <div id="giant-name-text" className="hidden lg:block leading-[0.85]">
+            <RevealText text="ARHAM" textColor="text-ice" overlayColor="text-steel" fontSize="text-[14vw]" isRevealed={revealState === "revealed" || revealState === "ssr"} />
+          </div>
+          <div className="hidden lg:block leading-[0.85]">
+            <RevealText text="SUHAIL" textColor="text-ice" overlayColor="text-steel" fontSize="text-[14vw]" isRevealed={revealState === "revealed" || revealState === "ssr"} />
+          </div>
+          <div className="block lg:hidden leading-[0.85] text-left">
+            <RevealText text="ARHAM" textColor="text-ice" overlayColor="text-steel" fontSize="text-[min(26vw,150px)]" className="!justify-start" isRevealed={revealState === "revealed" || revealState === "ssr"} />
+            <RevealText text="SUHAIL" textColor="text-ice" overlayColor="text-steel" fontSize="text-[min(26vw,150px)]" className="!justify-start" isRevealed={revealState === "revealed" || revealState === "ssr"} />
           </div>
         </motion.div>
       </motion.div>

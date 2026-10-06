@@ -47,6 +47,9 @@ export const metadata: Metadata = {
     description: siteData.seoDescription,
     creator: "@arhamsuhail",
   },
+  icons: {
+    icon: "/arham-wordmark.png",
+  },
 };
 
 export default function RootLayout({
