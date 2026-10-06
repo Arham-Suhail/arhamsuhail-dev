@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
 import { Resend } from 'resend';
-import { siteData } from '../../../data/site';
 
 const resend = process.env.RESEND_API_KEY ? new Resend(process.env.RESEND_API_KEY) : null;
 const contactEmail = process.env.CONTACT_TO_EMAIL || "arhamforwork247@gmail.com";
@@ -58,6 +57,7 @@ export async function POST(request: Request) {
 
     // Dev mode without API key
     if (!resend) {
+      console.error('RESEND_API_KEY missing');
       if (process.env.NODE_ENV !== 'production') {
         console.log('--- NEW CONTACT FORM SUBMISSION (DEV) ---');
         console.log(`Name: ${name}\nEmail: ${email}\nService: ${service}\nMessage: ${message}`);
@@ -66,6 +66,10 @@ export async function POST(request: Request) {
       } else {
         return NextResponse.json({ error: 'Service Unavailable' }, { status: 500 });
       }
+    }
+
+    if (!process.env.CONTACT_TO_EMAIL) {
+      console.error('CONTACT_TO_EMAIL missing');
     }
 
     const pktOptions = { timeZone: 'Asia/Karachi', dateStyle: 'full', timeStyle: 'long' } as const;
@@ -85,8 +89,15 @@ export async function POST(request: Request) {
       <p><small>Sent from arhamsuhail.dev contact form</small></p>
     `;
 
+    const fromAddress = process.env.CONTACT_FROM_EMAIL || "Arham Suhail <onboarding@resend.dev>";
+    
+    console.log(`Sending email...
+RESEND_API_KEY defined: ${!!process.env.RESEND_API_KEY}
+From: ${fromAddress}
+To: ${contactEmail}`);
+
     const { error: resendError } = await resend.emails.send({
-      from: 'Arham Suhail Site <onboarding@resend.dev>',
+      from: fromAddress,
       to: [contactEmail],
       replyTo: email,
       subject: `New enquiry: ${service} from ${name}`,
@@ -95,7 +106,7 @@ export async function POST(request: Request) {
     });
 
     if (resendError) {
-      console.error('Resend API error:', resendError.message || 'Unknown error');
+      console.error(`Resend error object: name=${resendError.name}, message="${resendError.message}", statusCode=${(resendError as Error & { statusCode?: number; status?: number }).statusCode || (resendError as Error & { statusCode?: number; status?: number }).status}`);
       return NextResponse.json({ error: 'Failed to send message via Resend' }, { status: 500 });
     }
 
