@@ -41,17 +41,25 @@ export function RevealText({
   useEffect(() => {
     if (!isRevealed) return;
     
-    // Calculate when the last letter animation completes
-    // Last letter starts at (text.length - 1) * letterDelay seconds
-    // Add springDuration for the spring animation to settle
-    const lastLetterDelay = (text.length - 1) * letterDelay;
-    const totalDelay = (lastLetterDelay * 1000) + springDuration;
-    
-    const timer = setTimeout(() => {
-      setShowRedText(true);
-    }, totalDelay);
-    
-    return () => clearTimeout(timer);
+    let timer: NodeJS.Timeout | null = null;
+    const triggerSweep = () => {
+      const lastLetterDelay = (text.length - 1) * letterDelay;
+      const totalDelay = (lastLetterDelay * 1000) + springDuration;
+      timer = setTimeout(() => {
+        setShowRedText(true);
+      }, totalDelay);
+    };
+
+    if (typeof document !== "undefined" && document.documentElement.getAttribute("data-hero-state") === "revealed") {
+      triggerSweep();
+    } else {
+      window.addEventListener("intro:reveal", triggerSweep, { once: true });
+    }
+
+    return () => {
+      if (timer) clearTimeout(timer);
+      window.removeEventListener("intro:reveal", triggerSweep);
+    };
   }, [text.length, letterDelay, springDuration, isRevealed]);
 
   return (
@@ -94,7 +102,7 @@ export function RevealText({
                 }
               }}
               style={{
-                backgroundImage: `url('${letterImages[index % letterImages.length]}')`,
+                backgroundImage: hoveredIndex === index ? `url('${letterImages[index % letterImages.length]}')` : undefined,
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
               }}
@@ -104,21 +112,14 @@ export function RevealText({
             
             {/* Overlay text layer that sweeps across each letter */}
             {showRedText && (
-              <motion.span
-                className={`absolute inset-0 ${overlayColor} pointer-events-none`}
-                initial={{ opacity: 0 }}
-                animate={{ 
-                  opacity: [0, 1, 1, 0]
-                }}
-                transition={{
-                  delay: index * overlayDelay,
-                  duration: overlayDuration,
-                  times: [0, 0.1, 0.7, 1],
-                  ease: "easeInOut"
+              <span
+                className={`absolute inset-0 ${overlayColor} pointer-events-none opacity-0`}
+                style={{
+                  animation: `revealTextSweep ${overlayDuration}s ease-in-out ${index * overlayDelay}s both`,
                 }}
               >
                 {letter}
-              </motion.span>
+              </span>
             )}
           </motion.span>
         ))}
