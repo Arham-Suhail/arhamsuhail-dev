@@ -5,10 +5,17 @@ import { siteData } from "../../data/site";
 import { ArrowUp, Mail } from "lucide-react";
 import { GithubIcon, LinkedinIcon } from "./Icons";
 
+import { useLenis } from "lenis/react";
+
 export default function Footer() {
+  const lenis = useLenis();
   const scrollToTop = (e: React.MouseEvent) => {
     e.preventDefault();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (lenis) {
+      lenis.scrollTo(0, { offset: 0 });
+    } else {
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
   };
 
   return (

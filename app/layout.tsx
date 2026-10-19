@@ -1,28 +1,31 @@
 import type { Metadata } from "next";
 import { Inter, Anton, Mrs_Saint_Delafield } from "next/font/google";
 import "./globals.css";
-import { Analytics } from "@vercel/analytics/react";
-import GoogleAnalytics from "../components/ui/Analytics";
+import DeferredAnalytics from "../components/ui/DeferredAnalytics";
 import { siteData } from "../data/site";
 import Navbar from "../components/ui/Navbar";
 import Footer from "../components/ui/Footer";
 import IntroSplash from "../components/intro-splash";
+import { SmoothScrollProvider } from "../components/providers/SmoothScrollProvider";
 
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const anton = Anton({
   variable: "--font-anton",
   weight: "400",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const mrsSaintDelafield = Mrs_Saint_Delafield({
   variable: "--font-mrs-saint-delafield",
   weight: "400",
   subsets: ["latin"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
@@ -80,6 +83,9 @@ export default function RootLayout({
                 var isSeen = freq === 'session' && sessionStorage.getItem('introSeen') === '1';
                 if (isSeen || window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
                   document.documentElement.setAttribute('data-intro-seen', '1');
+                  document.documentElement.setAttribute('data-hero-state', 'revealed');
+                } else {
+                  document.documentElement.setAttribute('data-hero-state', 'hidden');
                 }
               } catch (e) {}
             `,
@@ -87,18 +93,19 @@ export default function RootLayout({
         />
       </head>
       <body className="font-body bg-bg text-text selection:bg-ice selection:text-bg flex flex-col min-h-screen">
-        <IntroSplash />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
-        />
-        <Navbar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
-        <Analytics />
-        <GoogleAnalytics />
+        <SmoothScrollProvider>
+          <IntroSplash />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+          <Navbar />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+          <DeferredAnalytics />
+        </SmoothScrollProvider>
       </body>
     </html>
   );

@@ -32,13 +32,14 @@
 
 html {
   scroll-behavior: smooth;
+  overflow-x: clip;
 }
 
 body {
   background-color: var(--bg);
   color: var(--text);
   font-family: var(--font-body);
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 @media (prefers-reduced-motion) {
@@ -48,4 +49,120 @@ body {
 }
 
 html[data-intro-seen] #intro-splash-overlay { display: none !important; }
+
+@property --border-beam-angle {
+  syntax: "<angle>";
+  initial-value: 0deg;
+  inherits: false;
+}
+
+@keyframes border-beam {
+  to {
+    --border-beam-angle: 360deg;
+  }
+}
+
+.animate-border-beam {
+  animation: border-beam var(--border-beam-duration, 6s) linear infinite;
+  animation-delay: var(--border-beam-delay, 0s);
+}
+
+/* LAYER 3d: Hero entrance CSS transitions keyed on data-hero-state */
+html[data-hero-state="hidden"] .hero-entrance-name {
+  opacity: 0;
+  transform: translateY(24px) scale(1.03);
+}
+
+html[data-hero-state="hidden"] .hero-entrance-photo {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+html[data-hero-state="hidden"] .hero-entrance-headline,
+html[data-hero-state="hidden"] .hero-entrance-subcopy,
+html[data-hero-state="hidden"] .hero-entrance-ctas,
+html[data-hero-state="hidden"] .hero-entrance-specs {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+html[data-hero-state="revealed"] .hero-entrance-name {
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 0.9s cubic-bezier(0.16, 1, 0.3, 1), transform 0.9s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html[data-hero-state="revealed"] .hero-entrance-photo {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s, transform 0.8s cubic-bezier(0.16, 1, 0.3, 1) 0.15s;
+}
+
+html[data-hero-state="revealed"] .hero-entrance-headline {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.35s;
+}
+
+html[data-hero-state="revealed"] .hero-entrance-subcopy {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.44s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.44s;
+}
+
+html[data-hero-state="revealed"] .hero-entrance-ctas {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.53s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.53s;
+}
+
+html[data-hero-state="revealed"] .hero-entrance-specs {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.62s, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1) 0.62s;
+}
+
+html[data-intro-seen="1"] .hero-entrance-name,
+html[data-intro-seen="1"] .hero-entrance-photo,
+html[data-intro-seen="1"] .hero-entrance-headline,
+html[data-intro-seen="1"] .hero-entrance-subcopy,
+html[data-intro-seen="1"] .hero-entrance-ctas,
+html[data-intro-seen="1"] .hero-entrance-specs {
+  opacity: 1 !important;
+  transform: none !important;
+  transition: none !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-entrance-name,
+  .hero-entrance-photo,
+  .hero-entrance-headline,
+  .hero-entrance-subcopy,
+  .hero-entrance-ctas,
+  .hero-entrance-specs {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+}
+
+.hero-photo-mask {
+  mask-image: linear-gradient(to bottom, black 0%, black 65%, rgba(0, 0, 0, 0.75) 78%, rgba(0, 0, 0, 0.2) 88%, transparent 95%);
+  -webkit-mask-image: linear-gradient(to bottom, black 0%, black 65%, rgba(0, 0, 0, 0.75) 78%, rgba(0, 0, 0, 0.2) 88%, transparent 95%);
+}
+
+@media (min-width: 768px) {
+  .hero-photo-mask {
+    mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+    -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+  }
+}
+
+@keyframes revealTextSweep {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
 

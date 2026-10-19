@@ -1,66 +1,84 @@
 "use client";
 
-import { motion } from "framer-motion";
 import { Target, Bot, Zap } from "lucide-react";
+import { SpotlightCard } from "@/components/ui/spotlight-card";
+import { Reveal } from "@/components/ui/reveal";
+import { HangingBadge } from "@/components/ui/hanging-badge";
 
 const cards = [
   { 
-    icon: <Target className="text-ice" size={28} />, 
+    icon: <Target className="text-ice" size={20} />, 
     title: "Problem first, tools second",
-    desc: "I figure out what's actually slowing you down before touching any tool."
+    desc: "I find what is slowing you down before touching any tool."
   },
   { 
-    icon: <Bot className="text-ice" size={28} />, 
+    icon: <Bot className="text-ice" size={20} />, 
     title: "AI only where it pays off",
-    desc: "If a simple script does the job, that's what you get."
+    desc: "If a simple script does the job, that is what you get."
   },
   { 
-    icon: <Zap className="text-ice" size={28} />, 
+    icon: <Zap className="text-ice" size={20} />, 
     title: "Clean, fast, built to last",
-    desc: "Sites and automations that stay quick and don't break next month."
+    desc: "Fast, stable builds that do not break next month."
   }
 ];
 
 export default function About() {
   return (
-    <section id="about" className="py-16 md:py-20 relative">
-      <div className="max-w-7xl mx-auto px-6">
-        <div>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="mb-12"
-          >
-            <span className="text-steel text-sm font-bold tracking-widest uppercase block">01 / About</span>
-            <h2 className="font-display text-4xl md:text-5xl text-ice uppercase tracking-wide mt-4">
-              I&apos;m Arham. I build AI that does the boring work.
-            </h2>
-            <p className="text-lg text-muted max-w-[70ch] leading-relaxed mt-5">
-              Automations, calling agents and websites for businesses that want more done with less effort. I start with the problem, not the tech.
-            </p>
-          </motion.div>
+    <section id="about" className="pt-24 md:pt-32 pb-12 md:pb-16 relative scroll-mt-28">
+      {/* 120px seam gradient blending */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-[120px] bg-gradient-to-b from-bg via-bg/60 to-transparent z-10" />
+      <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[120px] bg-gradient-to-t from-bg via-bg/60 to-transparent z-10" />
 
-          <div className="w-full">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="max-w-6xl mx-auto px-6 relative z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-8 items-center">
+          {/* Left Column: Heading, copy, mobile badge, and three principles */}
+          <div className="lg:col-span-7 flex flex-col justify-center">
+            <Reveal className="max-w-2xl">
+              <span className="text-steel text-sm font-bold tracking-widest uppercase block">01 / About</span>
+              <h2 className="font-display text-4xl md:text-5xl text-ice uppercase tracking-wide mt-3 mb-4">
+                I&apos;m Arham. I build AI that does the boring work.
+              </h2>
+              <p className="text-base md:text-lg text-text/80 leading-relaxed">
+                Automations, calling agents and websites for businesses that want more done with less effort.
+              </p>
+              <p className="text-sm md:text-base text-muted leading-relaxed mt-1">
+                I start with the problem, not the tech. Based in Pakistan, working worldwide.
+              </p>
+            </Reveal>
+
+            {/* Below lg: The badge sits under the copy, centered */}
+            <div className="block lg:hidden my-8">
+              <Reveal delay={0.06}>
+                <HangingBadge />
+              </Reveal>
+            </div>
+
+            {/* Three small rounded-2xl principle cards */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 mt-8">
               {cards.map((card, i) => (
-                <motion.div
-                  key={i}
-                  initial={{ opacity: 0, y: 10 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true, margin: "-100px" }}
-                  transition={{ delay: i * 0.1 }}
-                  className="p-6 rounded-[20px] bg-surface border border-border flex flex-col items-start gap-3 hover:border-steel transition-colors group h-full"
-                >
-                  {card.icon}
-                  <span className="text-base font-medium text-text">{card.title}</span>
-                  <span className="text-sm text-muted line-clamp-2">{card.desc}</span>
-                </motion.div>
+                <Reveal key={i} delay={i * 0.06}>
+                  <SpotlightCard
+                    className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-5 flex flex-col items-start gap-2 h-[155px] justify-between"
+                  >
+                    <div className="p-1.5 rounded-lg bg-white/5 border border-white/10 w-fit">
+                      {card.icon}
+                    </div>
+                    <div>
+                      <h3 className="text-xs md:text-sm font-semibold text-white tracking-tight">{card.title}</h3>
+                      <p className="text-[11px] text-muted leading-relaxed mt-0.5">{card.desc}</p>
+                    </div>
+                  </SpotlightCard>
+                </Reveal>
               ))}
             </div>
-            <p className="text-sm text-muted mt-6">
-              Based in Pakistan, working worldwide.
-            </p>
+          </div>
+
+          {/* Right Column: Hanging Badge, vertically centered on lg screens */}
+          <div className="hidden lg:flex lg:col-span-5 items-center justify-center">
+            <Reveal delay={0.12}>
+              <HangingBadge />
+            </Reveal>
           </div>
         </div>
       </div>
